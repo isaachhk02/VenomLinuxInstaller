@@ -71,8 +71,10 @@ Install() {
  	cp -v genfstab arch-chroot /bin
 	if [[ "$IS_NVME" -eq 1 ]]; then
 		arch-chroot /mnt/venom mount "$DEV"p1 /boot
+  		cp -rv /boot/* /mnt/venom/boot
 	else
 		arch-chroot /mnt/venom mount "$DEV"1 /boot
+  		cp -rv /boot/* /mnt/venom/boot
 	fi
  	arch-chroot /mnt/venom grub-install --target=x86_64-efi --efi-directory=/boot
   	arch-chroot /mnt/venom grub-mkconfig -o /boot/grub/grub.cfg
