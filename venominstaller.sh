@@ -67,7 +67,8 @@ Install() {
 	echo "Done!"
 	git clone https://github.com/archlinux/arch-install-scripts.git
 	cd "arch-install-scripts" || return
-	make install
+	make
+ 	cp -v genfstab arch-chroot /bin
 	if [[ "$IS_NVME" -eq 1 ]]; then
 		arch-chroot /mnt/venom mount "$DEV"p1 /boot
 	else
