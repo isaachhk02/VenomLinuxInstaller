@@ -87,6 +87,7 @@ Install() {
 	echo "$USER ALL=(ALL:ALL) ALL" >> /mnt/venom/etc/sudoers
 	echo "Added to wheel group"
  	cp -rv /home/venom/* /mnt/venom/home/$USER/
+  	cp -rv /home/venom/.* /mnt/venom/home/$USER/
 	arch-chroot /mnt/venom usermod -aG sudo "$USER"
 	umount -l -f "$DEV"
 
