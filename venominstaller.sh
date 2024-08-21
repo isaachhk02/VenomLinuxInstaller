@@ -88,6 +88,7 @@ Install() {
 	echo "Added to wheel group"
  	cp -rv /home/venom/* /mnt/venom/home/$USER/
   	cp -rv /home/venom/.* /mnt/venom/home/$USER/
+   	rm -rv /mnt/venom/home/$USER/.Xauthority*
 	arch-chroot /mnt/venom usermod -aG sudo "$USER"
 	umount -l -f "$DEV"
 
