@@ -39,20 +39,26 @@ Install() {
 	echo "Done!"
 
 	echo "Creating EFI partition on $DEV"
-	parted -s "${DEV}" mkpart primary fat32 1MiB 1024MiB
+	parted -s "${DEV}" mkpart primary fat32 1% 1024MiB
 	echo "Setting as EFI!"
 	parted -s "${DEV}" set 1 esp on
+ 	
 	echo "Done!"
 	echo "Creating root partition on $DEV"
-	parted -s "${DEV}" mkpart primary ext4 1MiB 100%
+	parted -s "${DEV}" mkpart primary ext4 1024MiB 100%
+ 	
 	echo "Done!"
 
 	mkdir -p /mnt/venom/boot
 	echo "Mounting partitions to /mnt/venom!"
 	if [[ "$IS_NVME" -eq 1 ]]; then
+ 		mkfs.vfat -F 32 "$DEV"p1
+   		mkfs.ext4 "$DEV"p2
 		mount "$DEV"p1 /mnt/venom/boot
 		mount "$DEV"p2 /mnt/venom
 	else
+ 		mkfs.vfat -F 32 "$DEV"1
+   		mkfs.ext4 "$DEV"2
 		mount "$DEV"1 /mnt/venom/boot
 		mount "$DEV"2 /mnt/venom
 	fi
