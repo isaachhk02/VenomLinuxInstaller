@@ -67,6 +67,7 @@ Install() {
 	echo "Done!"
 	git clone https://github.com/archlinux/arch-install-scripts.git
 	cd "arch-install-scripts" || return
+ 	make
 	make install
 	arch-chroot /mnt/venom grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Venom
 	genfstab -U /mnt/venom > /mnt/venom/etc/fstab
