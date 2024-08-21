@@ -67,9 +67,14 @@ Install() {
 	echo "Done!"
 	git clone https://github.com/archlinux/arch-install-scripts.git
 	cd "arch-install-scripts" || return
- 	make
-	cp -v genfstab arch-chroot /bin
-	arch-chroot /mnt/venom grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Venom
+	make install
+	if [[ "$IS_NVME" -eq 1 ]]; then
+		arch-chroot /mnt/venom mount "$DEV"p1 /boot
+	else
+		arch-chroot /mnt/venom mount "$DEV"1 /boot
+	fi
+ 	arch-chroot /mnt/venom grub-install --target=x86_64-efi --efi-directory=/boot
+  	arch-chroot /mnt/venom grub-mkconfig -o /boot/grub/grub.cfg
 	genfstab -U /mnt/venom > /mnt/venom/etc/fstab
 	echo "Creating user: $USER"
 	arch-chroot /mnt/venom useradd -m "$USER"
@@ -79,10 +84,6 @@ Install() {
 	arch-chroot /mnt/venom usermod -aG wheel "$USER"
 	echo "Added to wheel group"
 	arch-chroot /mnt/venom usermod -aG sudo "$USER"
-	echo "Removing live user!"
-
-	arch-chroot /mnt/venom userdel -r venom
-
 	umount -l -f "$DEV"
 
 	echo "Write reboot to reboot your computer and cross your fingers!"
