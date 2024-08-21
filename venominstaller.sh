@@ -39,12 +39,12 @@ Install() {
 	echo "Done!"
 
 	echo "Creating EFI partition on $DEV"
-	parted -s "${DEV}" mkpart primary efi fat32 1MiB 1024MiB
+	parted -s "${DEV}" mkpart primary fat32 1MiB 1024MiB
 	echo "Setting as EFI!"
 	parted -s "${DEV}" set 1 esp on
 	echo "Done!"
 	echo "Creating root partition on $DEV"
-	parted -s "${DEV}" mkpart primary root ext4 1MiB 100%
+	parted -s "${DEV}" mkpart primary ext4 1MiB 100%
 	echo "Done!"
 
 	mkdir -p /mnt/venom/boot
